@@ -1,0 +1,168 @@
+Czołem!
+Czytacie coś co mam nadzieję stanie się w przyszłości obszernym kompendium wiedzy dla wszystkich człoków KNAB na temat systemu kontroli wersji git.
+Jako źródło dodatkowej i magicznej wiedzy polecam: https://git-scm.com/ oraz masę praktyki przy kodzeniu oraz rewelacyjny tutek od atlassiana: https://www.atlassian.com/git/tutorials/
+
+0. Terminy 
+	Ropozytorium: zbiór plików, które są nadzorowane przez git'a.
+	Repozytorium lokalne: zbiór plików nadzorowanych przez git'a, które znajdują się na maszynie lokalnej.
+	Repozytorium zdalne: zbiór plików nadzorowanych przez git'a na zewnętrznym serwerze.
+	// Komentarz: używać będę skrótu słownego repo zamiast repozytorium.
+
+Volume 1:
+
+1. Zanim przystąpimy do zabawy należy utworzyć konto na githubie lub bitbuckecie i stworzyć tam sobie repo do ćwiczeń.
+Stosowanie w praktyce komend znacznie przyśpieszy naukę, tak więc proszę się bawić ile wlezie.
+
+2. Tworzenie repo lokalnego
+	Do tworzenia repo lokalnego wykorzystuje się komendę:
+		git init
+	Tworzy ona lokalne puste repozytorium, do którego można dodawać od tej pory pliki oraz wersjonować kod.
+	Poprzez tworzenie repo mam na myśli utworzenie w danym katalogu, tym, dzie komenda została wywołana ukrytego katalogu .git.
+	Zawiera on wszelkie informacje odnośnie naszego repo i nie dotykamy się go w sposób inny niż za pomocą komend, bo może to mieć
+	skutki tragiczne. (Nie aż tak jak Romeo i Julia, ale nadal dobrze nie będzie)
+
+3. Dodatnie plików do lokalnego repo
+	Repo składa się z plików, ale gitowi trzeba jasno powiedzieć jakie zmiany ma śledzić, a jakich nie. Sam przecież się nie domyśli.
+	Służy do tego komenda:
+		git add <filename>
+		eg: git add my_special_file.txt //można też dodawać foldery całe, wtedy używa się git add my_dir //git doda wszystko rekursywnie
+	Po użyciu jej plik zostaje przeniesiony do poczekalni. Poczekalnia to miejsce, które jest zapisywane przy każdym commicie. (O tym za chwilę).
+	Istnieje komenda dodająca pliki wszystkie w danym miejscu: git add --all //Use it with caution
+	
+	Teraz w kilku słowach o stanach plików w gicie. Plik może znajdować się w jednym z następujących stanów: //Uwaga! Będę używał angielskich słów, bo program jest po angielsku
+	//większość dokumentacji, której będziecie używać jest po angielsku. Programuje się prawie wszędzie po angielsku, więc jeżeli ktoś Wam mówi, nazewnictwo i kod powinny być
+	//maksymalnie spolszczone to zastanówcie się dobrze nad jego zdrowiem psychicznym.
+	-utracked (nieśledzony) : plik taki nie znajduje się w obrębie zainteresowań git'a i nie jest przez niego wersjonowany. Z punkty widzenia git'a taki plik nawet nie istnieje.
+	-tracked (śledzony): created (utworzony) : plik został utworzony przed tym commitem i nie ma żadnych starszych wersji.
+					   : modified (zmodyfikowany) : plik został zmodyfikowany i jeszcze nie jest commitowany.
+	-added to commit : plik ma zostać zapisany z poczekalni do commitu w najbliższym czasie. Aby przenieść plik do poczekalni korzystamy z git add. Trzeba go użyć na wszystkich 
+					   zmodyfikowanych plikach, dodanych plikach. //Od wersji 1.9 git sam domyśla się co ma zrobić z plikami usuniętymi i ze zmienionymi nazwami.
+	-commited : pliki, w których nie wporwadzono zmian, ale są już zacommitowane.
+
+4. Zapis zmian
+	Skoro dodano już pliki lub zmodyfikowano istniejące to należy jakoś przenieść zmiany z poczekalni do trwałego przechowania, czyli je po prostu zapisać. Taki zapis nazywa 
+	się w gicie "commit". Aby to zrobić używamy następującej komendy:
+		git commit 
+	To powinno nas przekierować do edytora, który otworzy się w konsoli. W przypadku git for windows domyślnie jest to Vim, o zgrozo. Polecam użycie polecenia: git config --global core.editor notepad
+	Zmieni ono domyślnego vim'a na notepad. Chyba, że ktoś lubi się bawić jednym z najlepszych edytorów, które są dostępne na rynku. Jeżeli przypadkiem zaplączemy się w vimie, to 'a' pozwala przejść
+	w tryb edycji, a 'esc' z niego wyjść. Aby wyjść z zapisem używamy 'esc', a potem wpisujemy ':wq'.
+	Należy wprowadzić krótką wiadomość, tak zwany commit message. Powinnien być to zgrubny opis zmian.
+	Zapis zmian należy wprowadzać po zakończeniu zleconego zadania/kawałka funkcjonalności. Jeden commit na dzień pracy nie jest dopuszczalny. Historia commitów powinna stanowić rzetelną
+	dokumentację naszej pracy.
+
+	Alternatywą do odpalania edytora, jest użycie:
+		git commit -m "moja wiadomość o commicie"
+
+	Osobiście sugeruje pisać commity po angielsku.
+
+5. Diagnostyka zmian
+	Prędzej czy później utkniemy w punkcie martwym. Aby z niego wybrnąć trzeba zdiagnozować co się w naszym repo dzieje.
+	Do tego służy polecenie git status
+	Należy używać go zawsze gdy mamy wątpliwości lub chcemy się upewnić co dodaliśmy do poczekalni.
+
+6. Usuwanie zmian w plikach i plików z poczekalni
+	Do usunięcia zmina z pliku, tych, które nie były commitowane rzecz jasna, należy użyć polecenie git checkout -- <file name>
+	Cofnie to plik do ostatniej jego zacommitowanej wersji, więc sugeruję zawsze przed użyciem wykonanie kopii zapasowej.
+
+	Do usunięcia pliku z poczekalni jako takiego należy użyć komendy:
+		git reset HEAD <filename>
+	Jest to polecenie przeciwne do git add.
+
+	Aby przestać śledzić plik i usunąć go z repo oraz z dysku lokalnego używamy
+	git rm <filename>
+	Jeżeli jednak chcemy ten plik zatrzymać lokalnie to używamy:
+	git rm --cached <filename>
+
+7. Historia zmian
+	Każdy raz na czas chce zobaczyć historię zmian repo. Do tego służy polecenie git log. Można tam podać całą masę różnych flag i argumentów, które
+	pozwolą na ładny kolorowy i graficzny podgląd tego co się działo. Polecam zaaliasować sobie poniższe polecenie:
+	git log --graph --oneline --decorate
+
+Volume 2: Repozytoria zdalne
+
+1. Listowanie repozytoriów:
+	Aby wylistować dostępne nam w danym repo lokalnym repozytoria używa się komendy:
+		git remote
+	Można też użyć jej z flagą -v (git remote -v), te rzeczy po myślnikach nazywa się flagami. Użycie tej flagi spowoduje, że podane zostaną dodatkowe informacje odnośnie tych repozytoriów.
+	
+2. Dodawanie repozytoriów:
+	Aby repo dodać korzysta się z następującej komendy
+		git remote add <reponame> <url>
+	eg: git remote add origin https://github.com/gitsensei/gitstudy.git
+	Powyższa komedna utworzy powiązanie nazwy origin z repo pod wskazanym adresem. Od tej pory swoje lokalne możemy tam przepychać, a na innych komputerach ludzie mogą zmiany zaciągać.
+
+3. Przepychanie zmian do zdalnego repo:
+	Gdy już dodaliśmy repo zdalne powinniśmy nasz kod w nim umieścić. Do tego służy komenda:
+		git push <reponame> <branchname>	//o gałęziach/branchach za chwilę w naszym przykładzie branch nazywa się master
+	Komenda ta bierze nasz najbardziej aktualny commit i nadpisuje nim stan aktualny repozytorium zdalnego. 
+	Przed użyciem pusha należy zawsze sprawdzić, czy jesteśmy na bieżąco za pomocą git fetch. Ta prosta komenda nie zaciąga zmian, a jedynie sprawdza stan repozytorium zdalnego,
+	czyli czy jesteśmy na bieżąco i czy przed pushem będzie wymagany pull lub stash-pull-pop stash.
+
+	A co jeżeli coś nie pójdzie dobrze i okaże się, że jednak nie mamy aktualnej wersji?
+	Czytajcie dalej ;)
+
+4. Ściąganie zmian i różne problemy z tym związane.
+	Jeżeli jesteśmy z tyłu to zanim nasze zmiany wypchniemy należy wykonać git pull, przed wykonanie tego wszystkie nasze zmiany trzeba zacommitować.
+	To ściąga najnowszy kod z aktualnej gałęzi i automatycznie dokonuje scalenia wszystkich zmian.
+	Operacja ta może się jednak nie powieść co powoduje konflikty. W takim przypadku trzeba ręcznie wyedytować pliki, tak aby powstała ich ostateczna wersja, potem wykonać commit, a potem push.
+
+	Alternatywą do pull'a, który spowoduje konflikty jest wykonanie git stash <stashname> czyli tymczasowe przechowanie zmian w miejscu zwanym stashem. Następnie wykonanie pull'a, a potem 
+	wykonanie git stash pop <stashname>. Może to spowodować konflikty, które będzie trzeba rozwiązać.
+
+5. Klonowanie repozytoriów.
+	Jeżeli właśnie dołączyliśmy do nowego projektu i chcielibyśmy rozpocząć intensywne kodzenie to musimy ściągnąć kod repo wraz z jego katalogiem .git.
+	Do tego służy polecenie:
+		git clone <repourl>
+	Utworzy ono nowy katalog w folderze, w którym go użyliśmy, w którym będzie znajdował się projekt, który sklonowaliśmy wraz ze swoim katalogiem .git.
+
+Volume 3: Kooperacja
+
+	Git oryginalnie był pomyślany jako narzędzie do kooperacji i kolaboracji programistów. W celu zrównoleglenia pracy wprowadzono gałęzie, czyli takie nitki, które nie są siebie wzajemnie świadome
+	i stanowią rozłączne w pewnym stopniu workspace'y. Gałęzie są fantastyczne dzięki tej niezależności i możliwości pracy nad różnymi tematami naraz.
+
+1. Tworzenie brancha:
+	Aby utworzyć branch, czyli skopiować wszystkie pliki z aktualnego do nowego miejsca pracy i odizolowanie ich od siebie należy użyć polecenia:
+	git branch <branchname>
+	Brancha'a tworzy się zawsze gdy chcemy wykonać pracę nad nową funkcjonalnością lub jakiś hotfix (szybkie łatanie błędu). Należy pilnować, aby
+	gałaź główna czyli 'master' miała w sobie tylko działający kod.
+
+2. Nastęþnie pewnie będziemy chcieli do tej gałęzi przejść. Do tego celu służy polecenie:
+	git checkout <branchname>
+	Spowoduje ono przejście do nowej gałęzi i zmodyfikuje wszystkie pliki w folderze tak aby odzwierciedlały stan tamtej gałęzi.
+
+3. Gdy chcemy aby wskazana gałąź odzwierciedliła swoje istnie w repo zdalnym wystarczy wykonać z niej push'a do tego repo.
+4. Git merge
+	Wykonaliśmy już niezbędną pracę w danej gałęzi i upewniliśmy się, że nasz kod działa. Chcemy teraz przenieść te zmiany do 'master'a', czyli gałęzi głównej.
+	W tym celu używa się polecenia git merge. Tutaj są możliwe scenariusze:
+	A. Odkąd wykonaliśmy git branch nic nie było commitowane do mastera. Wtedy wystarczy przejść do gałęzi master (git chceckout master), a następnie:
+		git merge <branchToMergeName>
+	To wgra zmiany ze wskazanej gałęzi do mastera.
+	B. Odkąd wykonaliśmy git branch nastąpiły zmiany w masterze.
+		1. Mergujemy mastera do siebie, czyli git merge master. Commitujemy zmiany, a następnie przechodzimy do mastera i mergujemy zmiany z gałęzi na której pracowaliśmy:
+			git checkout work_branch				
+			git merge master
+			git commit -m 'merge commit'
+			git checkout master
+			git merge work_branch
+			git commit -m 'work_branch merge commit'
+		2. Wykonujemy git rebase:
+			git checkout work_branch
+			git rebase master
+			git checkout master
+			git merge work_branch
+
+5. Usuwanie gałęzi
+	Gdy gałąź potrzebna nie jest pozbyć jej się należy, tak głosi Tao Git'a.
+	Aby gałąź usunąć lokalnie:
+		git branch -d <branchname>
+	eg: git branch -d work_branch
+	Aby gałąź usunać zdalnie:
+		git push <reponame> :<branchname>
+	eg: git push origin :work_branch
+
+Volume 4: Administrajca
+1. .gitignore
+	Umieszczamy tutaj nazwy plików lub wyrażenia regularne opisujące co git ma ignorować.
+	Ignorujemy wszystko co jest generowane przez kompilator, wszystkie zbędne pliki, wszystkie lokalne ustawienia, które są generowane automatycznie.
+
+
