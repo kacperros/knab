@@ -6,7 +6,7 @@ package cars;
  * @since 2016-03-07, 23:41:39
  * @author Kacper Roszczyna
  */
-public class SportsCar extends AbstractCar{
+public class SportsCar extends Car{
 
     @Override
     public void accelerate() {
