@@ -1,0 +1,39 @@
+﻿DROP TABLE IF EXISTS friends;
+DROP TABLE IF EXISTS rpg_roles;
+DROP TABLE IF EXISTS rpgs;
+DROP TABLE IF EXISTS users;
+
+
+CREATE TABLE rpgs (
+	name		varchar(256) 	NOT NULL,
+	CONSTRAINT rpgs_pkey PRIMARY KEY(name)
+);
+
+CREATE TABLE rpg_roles (
+	name		varchar(32)	NOT NULL,
+	rpg_name	varchar(256)	NOT NULL,
+	CONSTRAINT rpg_roles_pkey PRIMARY KEY(name,rpg_name)
+);
+ALTER TABLE rpg_roles ADD CONSTRAINT rpg_name_fkey FOREIGN KEY (rpg_name) REFERENCES rpgs(name);
+
+
+CREATE TABLE users (
+	id 		SERIAL 		NOT NULL,
+	username	varchar(64)	NOT NULL,
+	name		varchar(64)		,
+	surname		varchar(64)		,
+	email		varchar(64)	NOT NULL,
+	password	varchar(512)	NOT NULL,
+	CONSTRAINT users_pkey PRIMARY KEY(id)
+);
+ALTER TABLE users ADD CONSTRAINT username_unique UNIQUE (username);
+ALTER TABLE users ADD CONSTRAINT email_unique UNIQUE(email);
+
+CREATE TABLE friends (
+	user1Id		INTEGER		NOT NULL,
+	user2Id		INTEGER		NOT NULL,
+	CONSTRAINT friends_pk PRIMARY KEY (user1Id, user2Id)
+);
+ALTER TABLE friends ADD CONSTRAINT user1Id_fkey FOREIGN KEY (user1Id) REFERENCES users(id);
+ALTER TABLE friends ADD CONSTRAINT user2Id_fkey FOREIGN KEY (user1Id) REFERENCES users(id);
+
