@@ -36,8 +36,10 @@ public class LoginActivity extends AppCompatActivity{
             return;
         }
 
-        if (loginText.equals("user") && passwordText.equals("password")) {
-            Toast.makeText(this, "Hi logged in user", Toast.LENGTH_LONG).show();
+        if (loginText.equals("admin") && passwordText.equals("password")) {
+            Intent intent = new Intent(this, ListActivity.class);
+            startActivity(intent);
+            finish();
         } else {
             Toast.makeText(this, "Inappropriate identification", Toast.LENGTH_LONG).show();
         }
@@ -56,9 +58,12 @@ public class LoginActivity extends AppCompatActivity{
 
 
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
     }
+
+
 }
