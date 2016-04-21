@@ -1,5 +1,6 @@
 package ros.dab.troll.myliverpg;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -36,10 +37,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             String password = passwordEditText.getText().toString();
 
             if(loginText.equals("admin") && password.equals("password")){
-                Toast.makeText(this, "Hi logged in user", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, ListActivity.class);
+                startActivity(intent);
+                finish();
             } else {
                 Toast.makeText(this, "Inappropiate identification", Toast.LENGTH_SHORT).show();
             }
         }
     }
+
 }
