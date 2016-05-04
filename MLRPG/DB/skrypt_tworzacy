@@ -37,3 +37,15 @@ CREATE TABLE friends (
 ALTER TABLE friends ADD CONSTRAINT user1Id_fkey FOREIGN KEY (user1Id) REFERENCES users(id);
 ALTER TABLE friends ADD CONSTRAINT user2Id_fkey FOREIGN KEY (user1Id) REFERENCES users(id);
 
+CREATE TABLE Games (
+	ID			INTEGER		NOT NULL,
+	date_n_time	DATETIME	NOT NULL,
+	place		varchar(256)	NOT NULL
+);
+
+CREATE TABLE Games_has_users_with_roles (
+);
+
+ALTER TABLE Games_has_users_with_roles ADD CONSTRAINT gameID_fkey FOREIGN KEY (gameID) REFERENCES Games(ID);
+ALTER TABLE Games_has_users_with_roles ADD CONSTRAINT UserID_fkey FOREIGN KEY (UserID) REFERENCES users(id);
+ALTER TABLE Games_has_users_with_roles ADD CONSTRAINT User_role_fkey FOREIGN KEY (User_role) REFERENCES rpg_roles(name);
