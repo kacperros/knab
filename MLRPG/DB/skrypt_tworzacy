@@ -2,6 +2,8 @@
 DROP TABLE IF EXISTS rpg_roles;
 DROP TABLE IF EXISTS rpgs;
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS Games;
+DROP TABLE IF EXISTS Games_has_users_with_roles;
 
 
 CREATE TABLE rpgs (
@@ -40,7 +42,8 @@ ALTER TABLE friends ADD CONSTRAINT user2Id_fkey FOREIGN KEY (user1Id) REFERENCES
 CREATE TABLE Games (
 	ID			INTEGER		NOT NULL,
 	date_n_time	DATETIME	NOT NULL,
-	place		varchar(256)	NOT NULL
+	place_x		float		NOT NULL,
+	place_y		float		NOT NULL
 );
 
 CREATE TABLE Games_has_users_with_roles (
