@@ -50,7 +50,7 @@ CREATE TABLE Games (
 CREATE TABLE Games_has_users_with_roles (
 	gameID		INTEGER		NOT NULL,
 	UserID		INTEGER		NOT NULL,
-	User_role	varchar(32)	NOT NULL
+	User_role	varchar(32)	NOT NULL,
 	CONSTRAINT Ghuwr_pk PRIMARY KEY (gameID, UserID, User_role)
 );
 
