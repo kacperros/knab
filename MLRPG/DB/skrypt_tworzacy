@@ -40,8 +40,8 @@ ALTER TABLE friends ADD CONSTRAINT user1Id_fkey FOREIGN KEY (user1Id) REFERENCES
 ALTER TABLE friends ADD CONSTRAINT user2Id_fkey FOREIGN KEY (user1Id) REFERENCES users(id);
 
 CREATE TABLE Games (
-	ID			SERIAL		NOT NULL,
-	date_n_time	DATETIME	NOT NULL,
+	ID		SERIAL		NOT NULL,
+	date_n_time	INTEGER		NOT NULL,
 	place_x		float		NOT NULL,
 	place_y		float		NOT NULL,
 	CONSTRAINT games_pk PRIMARY KEY (ID)
